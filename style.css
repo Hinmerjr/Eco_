@@ -1,3 +1,4 @@
+/* 🌌 Fondo general */
 body {
   font-family: Arial, sans-serif;
   background-color: #1e1e1e;
@@ -7,6 +8,7 @@ body {
   line-height: 1.6;
 }
 
+/* 🧺 Contenedor principal */
 .container {
   max-width: 500px;
   margin: 10vh auto;
@@ -22,7 +24,9 @@ body {
   transform: scale(1.01);
 }
 
-input, textarea {
+/* ✏️ Campos de texto */
+input,
+textarea {
   padding: 10px;
   width: 80%;
   margin-top: 10px;
@@ -39,6 +43,7 @@ input::placeholder {
   color: #aaa;
 }
 
+/* 🖱️ Botones */
 button {
   margin-top: 15px;
   padding: 10px 20px;
@@ -47,19 +52,22 @@ button {
   color: white;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 button:hover {
   background-color: #ff7777;
+  transform: scale(1.03);
 }
 
+/* 🚨 Mensaje de error */
 .error {
   color: #ffaaaa;
   margin-top: 10px;
   font-weight: bold;
 }
 
+/* 🪶 Texto del comentario guardado */
 #comentarioGuardado {
   margin-top: 15px;
   font-style: italic;
@@ -68,8 +76,28 @@ button:hover {
   padding-top: 10px;
 }
 
+/* 🎚️ Título del comentario */
 #comentario-container h3 {
   margin-top: 30px;
   color: #ffdddd;
   font-weight: normal;
+}
+
+/* 🔐 Botón secreto de borrado */
+#botonBorrar {
+  background-color: #444;
+  color: #ffaaaa;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 16px;
+  margin-top: 25px;
+  cursor: pointer;
+  font-size: 0.9em;
+  display: none; /* solo se muestra con clave especial */
+  transition: background-color 0.3s ease;
+}
+
+#botonBorrar:hover {
+  background-color: #ff3333;
+  color: #fff;
 }
