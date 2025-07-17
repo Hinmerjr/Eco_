@@ -169,10 +169,15 @@ function verificarClave() {
   const clave = document.getElementById("clave").value;
   const error = document.getElementById("error");
 
-  if (clave === "Hinmer0721") {
+  if (clave === "Hinmer0721" || clave === "Hinmerjr") {
     document.getElementById("login").style.display = "none";
     document.getElementById("mensaje").style.display = "block";
     mostrarMensaje();
+
+    // Si usas la clave de borrado, se muestra el botón especial
+    if (clave === "HinmerDelete") {
+      document.getElementById("botonBorrar").style.display = "inline-block";
+    }
   } else {
     error.textContent = "❌ Clave incorrecta. Intenta de nuevo.";
   }
@@ -197,7 +202,41 @@ function mostrarMensaje() {
 
 function hablar() {
   const mensaje = document.getElementById("texto").textContent;
-  const voz = new SpeechSynthesisUtterance(mensaje);
+  reproducirVoz(mensaje);
+}
+
+function guardarComentario() {
+  const hoy = new Date();
+  const claveComentario = `comentario-${hoy.getFullYear()}-${hoy.getMonth()}-${hoy.getDate()}`;
+  const comentario = document.getElementById("comentario").value;
+
+  if (comentario.trim() !== "") {
+    localStorage.setItem(claveComentario, comentario);
+    mostrarComentarioGuardado();
+    reproducirVoz(comentario); // 🎙️ Reproduce el comentario al guardarlo
+  }
+}
+
+function mostrarComentarioGuardado() {
+  const hoy = new Date();
+  const claveComentario = `comentario-${hoy.getFullYear()}-${hoy.getMonth()}-${hoy.getDate()}`;
+  const comentarioGuardado = localStorage.getItem(claveComentario);
+
+  if (comentarioGuardado) {
+    document.getElementById("comentarioGuardado").textContent = `🪶 Comentario guardado: “${comentarioGuardado}”`;
+    document.getElementById("comentario").style.display = "none";
+  }
+}
+
+function borrarComentarioPrivado() {
+  const hoy = new Date();
+  const claveComentario = `comentario-${hoy.getFullYear()}-${hoy.getMonth()}-${hoy.getDate()}`;
+  localStorage.removeItem(claveComentario);
+  location.reload();
+}
+
+function reproducirVoz(texto) {
+  const voz = new SpeechSynthesisUtterance(texto);
   voz.lang = "es-VE";
 
   const esperarVoces = setInterval(() => {
@@ -222,56 +261,3 @@ function hablar() {
     }
   }, 100);
 }
-
-function guardarComentario() {
-  const hoy = new Date();
-  const claveComentario = `comentario-${hoy.getFullYear()}-${hoy.getMonth()}-${hoy.getDate()}`;
-  const comentario = document.getElementById("comentario").value;
-
-  if (comentario.trim() !== "") {
-    localStorage.setItem(claveComentario, comentario);
-    mostrarComentarioGuardado();
-
-    const voz = new SpeechSynthesisUtterance(comentario);
-    voz.lang = "es-VE";
-
-    const esperarVoces = setInterval(() => {
-      const voces = speechSynthesis.getVoices();
-      if (voces.length > 0) {
-        clearInterval(esperarVoces);
-
-        const vozPreferida = voces.find(v =>
-          v.lang.startsWith("es") &&
-          (
-            v.name.toLowerCase().includes("male") ||
-            v.name.toLowerCase().includes("joven") ||
-            v.name.toLowerCase().includes("adult")
-          )
-        );
-
-        if (vozPreferida) {
-          voz.voice = vozPreferida;
-        }
-
-        speechSynthesis.speak(voz);
-      }
-    }, 100);
-  }
-}
-
-function mostrarComentarioGuardado() {
-  const hoy = new Date();
-  const claveComentario = `comentario-${hoy.getFullYear()}-${hoy.getMonth()}-${hoy.getDate()}`;
-  const comentarioGuardado = localStorage.getItem(claveComentario);
-
-  if (comentarioGuardado) {
-    document.getElementById("comentarioGuardado").textContent = `🪶 Comentario guardado: “${comentarioGuardado}”`;
-    document.getElementById("comentario").style.display = "none";
-  }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  if (document.getElementById("mensaje").style.display === "block") {
-    mostrarComentarioGuardado();
-  }
-});
