@@ -174,8 +174,7 @@ function verificarClave() {
     document.getElementById("mensaje").style.display = "block";
     mostrarMensaje();
 
-    // Si usas la clave de borrado, se muestra el botón especial
-    if (clave === "HinmerDelete") {
+    if (clave === "Hinmerjr") {
       document.getElementById("botonBorrar").style.display = "inline-block";
     }
   } else {
@@ -213,7 +212,7 @@ function guardarComentario() {
   if (comentario.trim() !== "") {
     localStorage.setItem(claveComentario, comentario);
     mostrarComentarioGuardado();
-    reproducirVoz(comentario); // 🎙️ Reproduce el comentario al guardarlo
+    reproducirVoz(comentario);
   }
 }
 
