@@ -180,9 +180,17 @@ function verificarClave() {
 
 function mostrarMensaje() {
   const hoy = new Date();
-  const diaRelativo = hoy.getMonth() * 31 + hoy.getDate() - 20; // arranca desde 21 de julio (día 1)
-  const index = diaRelativo >= 0 && diaRelativo < mensajes.length ? diaRelativo : 0;
-  document.getElementById("texto").textContent = mensajes[index].mensaje;
+  const diaRelativo = hoy.getMonth() * 31 + hoy.getDate() - 20; // arranca desde 21 de julio
+
+  const textoElemento = document.getElementById("texto");
+
+  if (diaRelativo >= 0 && diaRelativo < mensajes.length) {
+    textoElemento.textContent = mensajes[diaRelativo].mensaje;
+  } else {
+    textoElemento.textContent = "🌌 Hoy no hay eco preescrito. Tal vez este día espera tus palabras.";
+  }
+
+  mostrarComentarioGuardado(); // lo agregaremos en el próximo paso
 }
 
 function hablar() {
@@ -190,13 +198,11 @@ function hablar() {
   const voz = new SpeechSynthesisUtterance(mensaje);
   voz.lang = "es-VE";
 
-  // Esperar a que estén cargadas las voces disponibles
   const esperarVoces = setInterval(() => {
     const voces = speechSynthesis.getVoices();
     if (voces.length !== 0) {
       clearInterval(esperarVoces);
 
-      // Buscar una voz masculina en español
       const vozMasculina = voces.find(v =>
         v.lang.startsWith("es") && v.name.toLowerCase().includes("male")
       );
