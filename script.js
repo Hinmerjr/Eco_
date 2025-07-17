@@ -180,17 +180,19 @@ function verificarClave() {
 
 function mostrarMensaje() {
   const hoy = new Date();
-  const diaRelativo = hoy.getMonth() * 31 + hoy.getDate() - 20; // arranca desde 21 de julio
-
+  const diaRelativo = hoy.getMonth() * 31 + hoy.getDate() - 20;
   const textoElemento = document.getElementById("texto");
+  const numeroDiaElemento = document.getElementById("numerodia");
 
   if (diaRelativo >= 0 && diaRelativo < mensajes.length) {
     textoElemento.textContent = mensajes[diaRelativo].mensaje;
+    numeroDiaElemento.textContent = `📅 Día ${diaRelativo + 1} de ${mensajes.length}`;
   } else {
     textoElemento.textContent = "🌌 Hoy no hay eco preescrito. Tal vez este día espera tus palabras.";
+    numeroDiaElemento.textContent = "";
   }
 
-  mostrarComentarioGuardado(); // lo agregaremos en el próximo paso
+  mostrarComentarioGuardado();
 }
 
 function hablar() {
@@ -200,18 +202,76 @@ function hablar() {
 
   const esperarVoces = setInterval(() => {
     const voces = speechSynthesis.getVoices();
-    if (voces.length !== 0) {
+    if (voces.length > 0) {
       clearInterval(esperarVoces);
 
-      const vozMasculina = voces.find(v =>
-        v.lang.startsWith("es") && v.name.toLowerCase().includes("male")
+      const vozPreferida = voces.find(v =>
+        v.lang.startsWith("es") &&
+        (
+          v.name.toLowerCase().includes("male") ||
+          v.name.toLowerCase().includes("joven") ||
+          v.name.toLowerCase().includes("adult")
+        )
       );
 
-      if (vozMasculina) {
-        voz.voice = vozMasculina;
+      if (vozPreferida) {
+        voz.voice = vozPreferida;
       }
 
       speechSynthesis.speak(voz);
     }
   }, 100);
 }
+
+function guardarComentario() {
+  const hoy = new Date();
+  const claveComentario = `comentario-${hoy.getFullYear()}-${hoy.getMonth()}-${hoy.getDate()}`;
+  const comentario = document.getElementById("comentario").value;
+
+  if (comentario.trim() !== "") {
+    localStorage.setItem(claveComentario, comentario);
+    mostrarComentarioGuardado();
+
+    const voz = new SpeechSynthesisUtterance(comentario);
+    voz.lang = "es-VE";
+
+    const esperarVoces = setInterval(() => {
+      const voces = speechSynthesis.getVoices();
+      if (voces.length > 0) {
+        clearInterval(esperarVoces);
+
+        const vozPreferida = voces.find(v =>
+          v.lang.startsWith("es") &&
+          (
+            v.name.toLowerCase().includes("male") ||
+            v.name.toLowerCase().includes("joven") ||
+            v.name.toLowerCase().includes("adult")
+          )
+        );
+
+        if (vozPreferida) {
+          voz.voice = vozPreferida;
+        }
+
+        speechSynthesis.speak(voz);
+      }
+    }, 100);
+  }
+}
+
+function mostrarComentarioGuardado() {
+  const hoy = new Date();
+  const claveComentario = `comentario-${hoy.getFullYear()}-${hoy.getMonth()}-${hoy.getDate()}`;
+  const comentarioGuardado = localStorage.getItem(claveComentario);
+
+  if (comentarioGuardado) {
+    document.getElementById("comentarioGuardado").textContent = `🪶 Comentario guardado: “${comentarioGuardado}”`;
+    document.getElementById("comentario").style.display = "none";
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (document.getElementById("mensaje").style.display === "block") {
+    mostrarComentarioGuardado();
+  }
+});
