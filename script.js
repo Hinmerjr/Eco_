@@ -166,9 +166,11 @@ const mensajes = [
 ];
 
 function verificarClave() {
-  const claveIngresada = document.getElementById("clave").value.trim();
-  const claveUsuario = "Hinmer0721";
-  const claveModerador = "Josue";
+  const clave = document.getElementById("clave").value.trim();
+  if (clave === "Hinmer0721" || clave === "Josue") {
+    alert("✅ Clave reconocida");
+  } else {
+    document.getElementById("error").textContent = "❌ Clave incorrecta.";
 
   if (claveIngresada === claveUsuario || claveIngresada === claveModerador) {
     document.getElementById("login").style.display = "none";
