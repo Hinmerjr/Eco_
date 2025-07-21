@@ -166,101 +166,35 @@ const mensajes = [
   { "mensaje": " Último día. No dice adiós. Solo: 'Gracias por estar ahí, incluso cuando no estabas.' Feliz fin de año." }
 ];
 
-// 🔐 Verifica la clave secreta
 function verificarClave() {
   const claveIngresada = document.getElementById("clave").value.trim();
-  const claveCorrecta = "Hinmerjr0721"; // Cámbiala por la clave real
+  const claveCorrecta = "Hinmerjr0721";
 
   if (claveIngresada === claveCorrecta) {
     document.getElementById("login").style.display = "none";
     document.getElementById("mensaje").style.display = "block";
     mostrarMensaje();
   } else {
-    document.getElementById("error").textContent = "❌ Clave incorrecta. Intenta otra vez.";
+    document.getElementById("error").textContent = "❌ Clave incorrecta.";
   }
 }
 
-// 📅 Calcula y muestra el mensaje del día
 function mostrarMensaje() {
-  const fechaInicio = new Date("2025-07-21T00:00:00");
-  const hoy = new Date();
-  const diferenciaDias = Math.floor((hoy - fechaInicio) / (1000 * 60 * 60 * 24));
+  const ultimoDia = localStorage.getItem("eco_fecha");
+  const hoy = new Date().toISOString().split("T")[0];
+  let indice = parseInt(localStorage.getItem("eco_indice") || "0");
 
-  if (diferenciaDias >= 0 && diferenciaDias < mensajes.length) {
-    const mensaje = mensajes[diferenciaDias].mensaje;
-    document.getElementById("texto").textContent = mensaje;
-    document.getElementById("numerodia").textContent = `Día ${diferenciaDias + 1} de ${mensajes.length}`;
-    mostrarComentarioGuardado();
-  } else {
-    document.getElementById("texto").textContent = "📦 Aún no hay mensaje disponible para hoy.";
+  if (ultimoDia !== hoy) {
+    indice++;
+    localStorage.setItem("eco_fecha", hoy);
+    localStorage.setItem("eco_indice", indice);
+  }
+
+  if (indice >= mensajes.length) {
+    document.getElementById("texto").textContent = "🎁 Has recibido todos los mensajes.";
     document.getElementById("numerodia").textContent = "";
-  }
-}
-
-// 🔊 Reproduce el mensaje con voz
-function hablar() {
-  const mensaje = document.getElementById("texto").textContent;
-  reproducirVoz(mensaje);
-}
-
-// 🎙️ Configura la voz hablada
-function reproducirVoz(texto) {
-  const voz = new SpeechSynthesisUtterance(texto);
-  voz.lang = "es-VE";
-
-  const esperarVoces = setInterval(() => {
-    const voces = speechSynthesis.getVoices();
-    if (voces.length > 0) {
-      clearInterval(esperarVoces);
-
-      const vozPreferida = voces.find(v =>
-        v.lang.startsWith("es") &&
-        (
-          v.name.toLowerCase().includes("male") ||
-          v.name.toLowerCase().includes("joven") ||
-          v.name.toLowerCase().includes("adult")
-        )
-      );
-
-      if (vozPreferida) {
-        voz.voice = vozPreferida;
-      }
-
-      speechSynthesis.speak(voz);
-    }
-  }, 100);
-}
-
-// 🖋️ Guarda el comentario personal del día
-function guardarComentario() {
-  const fecha = new Date().toISOString().split("T")[0];
-  const comentario = document.getElementById("comentario").value.trim();
-  if (!comentario) return;
-
-  localStorage.setItem("comentario_" + fecha, comentario);
-  document.getElementById("comentarioGuardado").textContent = "✅ Comentario guardado.";
-  mostrarComentarioGuardado();
-}
-
-// 📥 Recupera el comentario si ya existe
-function mostrarComentarioGuardado() {
-  const fecha = new Date().toISOString().split("T")[0];
-  const comentario = localStorage.getItem("comentario_" + fecha);
-  if (comentario) {
-    document.getElementById("comentario").value = comentario;
-    document.getElementById("comentarioGuardado").textContent = "📝 Comentario recuperado.";
-    document.getElementById("botonBorrar").style.display = "inline-block";
   } else {
-    document.getElementById("comentarioGuardado").textContent = "";
-    document.getElementById("botonBorrar").style.display = "none";
+    document.getElementById("texto").textContent = mensajes[indice].mensaje;
+    document.getElementById("numerodia").textContent = `Mensaje ${indice + 1} de ${mensajes.length}`;
+    mostrarComentarioGuardado();
   }
-}
-
-// 🧹 Borra el comentario personal del día
-function borrarComentarioPrivado() {
-  const fecha = new Date().toISOString().split("T")[0];
-  localStorage.removeItem("comentario_" + fecha);
-  document.getElementById("comentario").value = "";
-  document.getElementById("comentarioGuardado").textContent = "🧽 Comentario borrado.";
-  document.getElementById("botonBorrar").style.display = "none";
-}
