@@ -168,7 +168,7 @@ const mensajes = [
 function verificarClave() {
   const claveIngresada = document.getElementById("clave").value.trim();
   const claveUsuario = "Hinmer0721";
-  const claveModerador = "Hinmerjr0721";
+  const claveModerador = "Josue";
 
   if (claveIngresada === claveUsuario || claveIngresada === claveModerador) {
     document.getElementById("login").style.display = "none";
