@@ -1,95 +1,45 @@
 body {
-  font-family: Arial, sans-serif;
-  background-color: #1e1e1e;
-  color: #fff;
   margin: 0;
-  padding: 0;
-  line-height: 1.6;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom, #1c0e21, #300c2e);
+  color: #f8f8f8;
+  text-align: center;
+  padding: 2rem;
 }
 
 .container {
-  max-width: 500px;
-  margin: 10vh auto;
-  padding: 20px;
-  text-align: center;
-  background-color: #2a2a2a;
-  border-radius: 8px;
-  box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease;
-}
-
-.container:hover {
-  transform: scale(1.01);
+  max-width: 600px;
+  margin: auto;
 }
 
 input, textarea {
-  padding: 10px;
-  width: 80%;
-  margin-top: 10px;
+  width: 90%;
+  padding: 0.8rem;
+  margin: 0.5rem 0;
   border: none;
-  border-radius: 5px;
-  background-color: #1e1e1e;
-  color: #fff;
-  font-family: inherit;
-  resize: none;
-}
-
-textarea::placeholder,
-input::placeholder {
-  color: #aaa;
+  border-radius: 6px;
+  font-size: 1rem;
 }
 
 button {
-  margin-top: 15px;
-  padding: 10px 20px;
-  background-color: #ff5555;
-  border: none;
+  padding: 0.7rem 1.5rem;
+  background-color: #e03e69;
   color: white;
-  border-radius: 5px;
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-size: 1rem;
 }
-
 button:hover {
-  background-color: #ff7777;
-  transform: scale(1.03);
+  background-color: #ff5555;
 }
 
 .error {
-  color: #ffaaaa;
-  margin-top: 10px;
-  font-weight: bold;
+  color: #ff8888;
 }
 
-#comentarioGuardado {
-  margin-top: 15px;
-  font-style: italic;
+.info {
+  font-size: 0.9rem;
   color: #ccc;
-  border-top: 1px dashed #444;
-  padding-top: 10px;
-}
-
-#comentario-container h3 {
-  margin-top: 30px;
-  color: #ffdddd;
-  font-weight: normal;
-}
-
-/* 🔐 Botón de borrado privado */
-#botonBorrar {
-  background-color: #444;
-  color: #ffaaaa;
-  border: none;
-  border-radius: 5px;
-  padding: 8px 16px;
-  margin-top: 25px;
-  cursor: pointer;
-  font-size: 0.9em;
-  display: none;
-  transition: background-color 0.3s ease;
-}
-
-#botonBorrar:hover {
-  background-color: #ff3333;
-  color: #fff;
+  margin-top: 0.3rem;
 }
